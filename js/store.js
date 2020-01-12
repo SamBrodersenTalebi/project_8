@@ -80,14 +80,33 @@
 
 		callback = callback || function () {};
 
+		//BUG 2: Each todo now has a unique id thanks to checkId functions
 		// Generate an ID
-	    var newId = ""; 
-	    var charset = "0123456789";
+		var newId = ""; 
+		
+		function checkId(){
+            let id = '';
+            
+            var charset = "0123456789";
 
-        for (var i = 0; i < 6; i++) {
-     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
-		}
+            for (var i = 0; i < 6; i++) {
+                //charAt method returns the first character of a string
+                // so basically returns a random number 0-9 six times
+                id += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
 
+            //you find method to determine if id exists
+            //If id does exists, then idExists variable will equal a number otherwise it will be undefined.
+            let idExists = todos.find(todo => todo.id === id);
+
+            //if the id already exists then it will call the function again.
+            if(idExists){
+                checkId();
+            }else{
+                newId = id;
+            }
+        }
+        checkId();
 
 		// If an ID was actually given, find the item and update each property
 		if (id) {
