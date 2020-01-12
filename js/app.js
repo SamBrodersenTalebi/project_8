@@ -9,6 +9,7 @@
 	 */
 	
 	function Todo(name) {
+		//each of them are objects
 		this.storage = new app.Store(name);
 		this.model = new app.Model(this.storage);
 		this.template = new app.Template();

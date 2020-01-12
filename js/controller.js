@@ -1,4 +1,6 @@
 (function (window) {
+	//JavaScript code should be executed in strict mode
+	//means that you can't use undeclared variables
 	'use strict';
 
 	/**
@@ -45,6 +47,9 @@
 			self.toggleAll(status.completed);
 		});
 	}
+
+	//When calling protype on the object you define a new key value(function in this case)
+	//new property will be added to the object
 
 	/**
 	 * Loads and initialises the view

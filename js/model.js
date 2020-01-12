@@ -18,7 +18,13 @@
 	 * @param {function} [callback] The callback to fire after the model is created
 	 */
 	Model.prototype.create = function (title, callback) {
+		// title is each to title or ''
 		title = title || '';
+		/*
+			It is checking to ensure that callback isn't undefined. 
+			If it is undefined, 
+			then it is assigning it an anonymous function in order for the callback() code to not fail.
+		*/
 		callback = callback || function () {};
 
 		var newItem = {
