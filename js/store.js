@@ -77,6 +77,7 @@
 	Store.prototype.save = function (updateData, callback, id) {
 		var data = JSON.parse(localStorage[this._dbName]);
 		var todos = data.todos;
+		console.log(todos);
 
 		callback = callback || function () {};
 

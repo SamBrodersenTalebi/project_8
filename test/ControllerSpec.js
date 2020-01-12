@@ -5,7 +5,12 @@ describe('controller', function () {
 
 	var subject, model, view;
 
+	//set up model
 	var setUpModel = function (todos) {
+		/*
+		and.callFake is used by spies 
+		using the original object but do not call a fake method
+		 */
 		model.read.and.callFake(function (query, callback) {
 			callback = callback || query;
 			callback(todos);
@@ -42,6 +47,10 @@ describe('controller', function () {
 	var createViewStub = function () {
 		var eventRegistry = {};
 		return {
+			/*createSpy is useful when you do not have any function to spy upon 
+			or when the call to the original function would inflict a lag in time 
+			(especially if it involves HTTP requests) 
+			*/ 
 			render: jasmine.createSpy('render'),
 			bind: function (event, handler) {
 				eventRegistry[event] = handler;
@@ -53,6 +62,11 @@ describe('controller', function () {
 	};
 
 	beforeEach(function () {
+		/*
+		This method creates a mock object with multiple spies. 
+		The created object has the spy methods as its properties,
+ 		with their respective return values as its values
+		 */
 		model = jasmine.createSpyObj('model', ['read', 'getCount', 'remove', 'create', 'update']);
 		view = createViewStub();
 		subject = new app.Controller(model, view);
@@ -60,6 +74,17 @@ describe('controller', function () {
 
 	it('should show entries on start-up', function () {
 		// TODO: write test
+
+		var todo = {title:'my todo'};
+
+		expect(todo).toBeDefined();
+
+		setUpModel([todo]);
+
+		subject.setView('');
+
+		expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
+
 	});
 
 	describe('routing', function () {
@@ -84,10 +109,37 @@ describe('controller', function () {
 
 		it('should show active entries', function () {
 			// TODO: write test
+
+
+			//active means completed is false
+			var todo = {title: 'my todo', completed: false}
+
+			expect(todo).toBeDefined();
+
+			setUpModel([todo]);
+
+			// The @param {string} is active therefore pass the word active to function 'active' 
+			subject.setView('/active');
+
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'active')
+
 		});
 
 		it('should show completed entries', function () {
 			// TODO: write test
+
+			//active means completed is false
+			var todo = {title: 'my todo', completed: true}
+
+			expect(todo).toBeDefined();
+
+			setUpModel([todo]);
+
+			// The @param {string} is completed therefore pass the word completed to function 'completed' 
+			subject.setView('/completed');
+
+			//setFilter is called with completed in this case
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
 		});
 	});
 
@@ -135,15 +187,33 @@ describe('controller', function () {
 
 	it('should highlight "All" filter by default', function () {
 		// TODO: write test
+		var todo = {title:'my todo', completed:false};
+		expect(todo).toBeDefined();
+
+		setUpModel([todo]);
+
+		subject.setView('');
+
+		expect(view.render).toHaveBeenCalledWith('setFilter', '');
 	});
 
 	it('should highlight "Active" filter when switching to active view', function () {
 		// TODO: write test
+
+		var todo = {title:'my todo', completed:false};
+		expect(todo).toBeDefined();
+
+		setUpModel([todo]);
+
+		subject.setView('/active');
+
+		expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 	});
 
 	describe('toggle all', function () {
 		it('should toggle all todos to completed', function () {
 			// TODO: write test
+
 		});
 
 		it('should update the view', function () {
@@ -154,6 +224,7 @@ describe('controller', function () {
 	describe('new todo', function () {
 		it('should add a new todo to the model', function () {
 			// TODO: write test
+			
 		});
 
 		it('should add a new todo to the view', function () {
