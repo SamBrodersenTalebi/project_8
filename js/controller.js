@@ -93,8 +93,8 @@
 	 * object and it'll handle the DOM insertion and saving of the new item.
 	 */
 
-	
-	Controller.prototype.adddItem = function (title) {
+	//BUG 1: Type error, there is an extra d in add
+	Controller.prototype.addItem = function (title) {
 		var self = this;
 
 		if (title.trim() === '') {
