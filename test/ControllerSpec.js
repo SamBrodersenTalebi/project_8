@@ -85,6 +85,7 @@ describe('controller', function () {
 		subject.setView('');
 
 		//view.render renders the view of the todo
+		//showEntries is called with the todo object
 		expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 
 	});
@@ -123,6 +124,8 @@ describe('controller', function () {
 			// The @param {string} is active therefore pass the word active to function 'active' 
 			subject.setView('/active');
 
+			//setFilter method is called with active or completed in this case active
+			//The method filters the todo objects
 			expect(view.render).toHaveBeenCalledWith('setFilter', 'active')
 
 		});
@@ -196,6 +199,7 @@ describe('controller', function () {
 
 		subject.setView('');
 
+		//If it is not active nor completed then it is all ''.
 		expect(view.render).toHaveBeenCalledWith('setFilter', '');
 	});
 
