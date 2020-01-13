@@ -81,8 +81,10 @@ describe('controller', function () {
 
 		setUpModel([todo]);
 
+		//setView loads and initializes the view
 		subject.setView('');
 
+		//view.render renders the view of the todo
 		expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 
 	});
@@ -213,18 +215,51 @@ describe('controller', function () {
 	describe('toggle all', function () {
 		it('should toggle all todos to completed', function () {
 			// TODO: write test
+			//not completed yet
+			var todo = {title:'cleaning', completed:false, id:234561};
+
+			//setting up the model by giving it user input
+			setUpModel([todo]);
+
+			subject.setView('');
+
+			//need to trigger the view in order for the model to update
+			view.trigger('toggleAll', {completed:true});
+
+			expect(model.update).toHaveBeenCalledWith(234561, {completed:true}, jasmine.any(Function));
+
+
 
 		});
 
 		it('should update the view', function () {
 			// TODO: write test
+
+			var todo = {title:'todo', completed:false, id:123456};
+
+			setUpModel([todo]);
+
+			subject.setView('');
+
+			view.trigger('toggleAll',{completed:true});
+
+			expect(view.render).toHaveBeenCalledWith('elementComplete', Object({ id: 123456, completed: true }));
 		});
 	});
 
 	describe('new todo', function () {
 		it('should add a new todo to the model', function () {
 			// TODO: write test
-			
+			setUpModel([]);
+
+			subject.setView('');
+
+			//view presents the model
+			view.trigger('newTodo', 'a new todo');
+
+			//model is receiving data from the app
+			//The jasmine.any function should be applied successfully for comparing types of arguments.
+			expect(model.create).toHaveBeenCalledWith('a new todo', jasmine.any(Function));
 		});
 
 		it('should add a new todo to the view', function () {
@@ -265,6 +300,15 @@ describe('controller', function () {
 	describe('element removal', function () {
 		it('should remove an entry from the model', function () {
 			// TODO: write test
+			var todo ={title:'my todo', completed:true, id:123456};
+
+			setUpModel([todo]);
+
+			subject.setView('');
+
+			view.trigger('itemRemove', {id:123456});
+
+			expect(model.remove).toHaveBeenCalledWith(123456, jasmine.any(Function));
 		});
 
 		it('should remove an entry from the view', function () {
